@@ -89,6 +89,7 @@ class EventEmitter {
             blockchain,
             product,
             logger,
+            graphStorage,
         } = this.ctx;
 
         this._on('api-import-request', (data) => {
@@ -174,7 +175,7 @@ class EventEmitter {
         });
 
         this._on('api-query', (data) => {
-            product.getVertices(data.query).then((res) => {
+            graphStorage.findImportIds(data.query).then((res) => {
                 if (res.length === 0) {
                     data.response.status(204);
                 } else {
