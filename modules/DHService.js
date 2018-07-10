@@ -119,10 +119,14 @@ class DHService {
 
             const profile = await this.blockchain.getProfile(this.config.node_wallet);
 
-            maxTokenAmount = new BN(maxTokenAmount);
-            minStakeAmount = new BN(minStakeAmount);
             dataSizeBytes = new BN(dataSizeBytes);
             const totalEscrowTimePerMinute = Math.round(totalEscrowTime / 60000);
+            const offerPrice = new BN(maxTokenAmount)
+                .mul(dataSizeBytes)
+                .mul(new BN(totalEscrowTimePerMinute));
+            const offerStake = new BN(minStakeAmount)
+                .mul(dataSizeBytes)
+                .mul(new BN(totalEscrowTimePerMinute));
             const myPrice = new BN(profile.token_amount_per_byte_minute)
                 .mul(dataSizeBytes)
                 .mul(new BN(totalEscrowTimePerMinute));
@@ -130,13 +134,22 @@ class DHService {
                 .mul(dataSizeBytes)
                 .mul(new BN(totalEscrowTimePerMinute));
 
-            if (maxTokenAmount.lt(myPrice)) {
+            const offerPriceFactor = new BN(maxTokenAmount).div(new BN('1000000000000000000'));
+            const offerStakeFactor = new BN(minStakeAmount).div(new BN('1000000000000000000'));
+            const myPriceFactor = new BN(profile.token_amount_per_byte_minute).div(new BN('1000000000000000000'));
+            const myStakeFactor = new BN(profile.stake_amount_per_byte_minute).div(new BN('1000000000000000000'));
+
+            if (offerPrice.lt(myPrice)) {
                 this.log.info(`Offer ${importId} too cheap for me.`);
+                this.log.info(`Maximum offered price ${offerPriceFactor} TRAC per b/min`);
+                this.log.info(`My price ${myPriceFactor} TRAC per b/min`);
                 return;
             }
 
-            if (minStakeAmount.gt(myStake)) {
+            if (offerStake.gt(myStake)) {
                 this.log.info(`Skipping offer ${importId}. Stake too high.`);
+                this.log.info(`Minimum required stake ${offerStakeFactor} TRAC per b/min`);
+                this.log.info(`My stake ${myStakeFactor} TRAC per b/min`);
                 return;
             }
 

@@ -105,7 +105,7 @@ class DCService {
         const importSizeInBytes = new BN(this._calculateImportSize(vertices));
         const newOfferRow = {
             import_id: importId,
-            total_escrow_time: totalEscrowTime / 60000,
+            total_escrow_time: Math.round(totalEscrowTime / 60000),
             max_token_amount: maxTokenAmount.toString(),
             min_stake_amount: minStakeAmount.toString(),
             min_reputation: minReputation,
