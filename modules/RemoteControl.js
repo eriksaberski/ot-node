@@ -118,6 +118,10 @@ class RemoteControl {
             this.socket.on('get-replicated', () => {
                 this.getReplicatedData();
             });
+
+            this.socket.on('payout', (dcWallet, importId) => {
+                this.payOut(dcWallet, importId);
+            });
         });
     }
 
@@ -288,6 +292,17 @@ class RemoteControl {
         web3.eth.getBalance(process.env.NODE_WALLET).then((balance) => {
             this.socket.emit('balance', balance);
         });
+    }
+
+    /**
+     * Payout from escrow
+     * @param dcWallet
+     * @param importId
+     * @returns {Promise<void>}
+     */
+    async payOut(dcWallet, importId) {
+        await this.blockchain.payOut(dcWallet, importId);
+        this.socket.emit('payout_complete');
     }
 }
 
