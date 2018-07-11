@@ -142,18 +142,6 @@ module.exports = {
         value: uuidv4(),
     },
     {
-        key: 'dh_min_price',
-        value: '10',
-    },
-    {
-        key: 'dh_max_price',
-        value: '1000',
-    },
-    {
-        key: 'dh_max_stake',
-        value: '1000',
-    },
-    {
         key: 'remote_control_enabled',
         value: '1',
     },
@@ -164,33 +152,38 @@ module.exports = {
     },
     {
         key: 'dh_stake_factor',
-        value: '3500000000000', // ~ 5 TRAC per kB/day
+        value: '1',
+    },
+    {
+        // dh_price_per_offer
+        key: 'dh_price',
+        value: '14000000000000', // ~ 20 TRAC per kB/day
     },
     {
         key: 'read_stake_factor',
         value: '1',
     },
     {
+        // dh_max_offer_time_in_minutes
         key: 'dh_max_time_mins',
         value: '100000',
-    },
-    {
-        key: 'dh_price',
-        value: '14000000000000', // ~ 20 TRAC per kB/day
     },
     {
         key: 'total_escrow_time_in_milliseconds',
         value: 600000,
     },
     {
+        // dc_max_token_amount_per_dh
         key: 'max_token_amount_per_dh',
-        value: '14000000000000', // ~ 20 TRAC per kB/day
+        value: '14000000000000', // ~ 20 TRAC per kB/day 0.001
     },
     {
+        // dc_min_stake_amount_per_dh
         key: 'dh_min_stake_amount',
         value: '3500000000000', // ~ 5 TRAC per kB/day
     },
     {
+        // dc_min_dh_reputation
         key: 'dh_min_reputation',
         value: 0,
     },
